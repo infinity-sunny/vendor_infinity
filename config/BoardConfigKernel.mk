@@ -114,11 +114,12 @@ TOOLS_PATH_OVERRIDE := \
     PERL5LIB=$(BUILD_TOP)/prebuilts/tools-lineage/common/perl-base
 
 ifneq ($(KERNEL_NO_GCC), true)
+    GCC_PREBUILTS := $(BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)
+
     ifeq ($(TARGET_KERNEL_NEW_GCC_COMPILE),true)
         ifeq ($(TARGET_KERNEL_CLANG_COMPILE),true)
             $(error TARGET_KERNEL_NEW_GCC_COMPILE cannot be used with TARGET_KERNEL_CLANG_COMPILE!)
         endif
-        GCC_PREBUILTS := $(BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)
         # arm64 toolchain
         KERNEL_TOOLCHAIN_arm64 := $(GCC_PREBUILTS)/aarch64/aarch64-elf/bin
         KERNEL_TOOLCHAIN_PREFIX_arm64 := aarch64-elf-
@@ -127,9 +128,11 @@ ifneq ($(KERNEL_NO_GCC), true)
         KERNEL_TOOLCHAIN_PREFIX_arm := arm-eabi-
     else
         # arm64 toolchain
-        KERNEL_TOOLCHAIN_PREFIX_arm64 := aarch64-linux-gnu-
+        KERNEL_TOOLCHAIN_arm64 := $(GCC_PREBUILTS)/aarch64/aarch64-linux-android-4.9/bin
+        KERNEL_TOOLCHAIN_PREFIX_arm64 := aarch64-linux-android-
         # arm toolchain
-        KERNEL_TOOLCHAIN_PREFIX_arm := arm-linux-gnueabi-
+        KERNEL_TOOLCHAIN_arm := $(GCC_PREBUILTS)/arm/arm-linux-androideabi-4.9/bin
+        KERNEL_TOOLCHAIN_PREFIX_arm := arm-linux-androidkernel-
     endif
     # x86 toolchain
     KERNEL_TOOLCHAIN_PREFIX_x86 := x86_64-linux-gnu-
